@@ -1,0 +1,96 @@
+*.class
+*.log
+.DS_Store
+
+# sbt specific
+.cache
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+delivery/orchestrator/dependencies/*/project
+pieces/*/src/main/resources
+entities/*/src/main/resources
+entities/*/*/src/main/resources
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+.idea
+*.iml
+
+# ENSIME specific
+.ensime_cache/
+.ensime
+
+# Emacs
+.directory
+.project
+
+# Temp files
+.#*
+
+#Zookeeper
+.data/
+
+# Sublime Text specific
+*.sublime-*
+
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+#Ansible
+.ansible
+*.retry
+*vault.pwd
+
+#roles/
+ansible-*
+ssh-*.cfg
+venv-*
+inventory.json
+.aws
+
+#Local CD
+envs.*
+
+#Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+#Notebooks
+.ipynb_checkpoints
+
+# Created during testing execution
+*venv*
+testreport/
+logs/
+_output/
+test_reports
+.project
+.pydevproject
+.settings
+.vscode
+
+#QA
+vault*
+clean.sh*
+
+#Scalametals specific
+.bloop/
+.metals/
+project/.bloop/
+
+# IDEA specific
+*.iml
+
+# Rust
+/target
+**/*.rs.bk

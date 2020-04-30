@@ -1,0 +1,17 @@
+= DeltaApp AWS-Glue Application
+:toc:
+
+== Abstract
+
+== Build
+
+```
+mvn compile
+
+mvn exec:java -Dexec.mainClass="GlueApp" -Dexec.args="--JOB-NAME delta-play-job --RAW_DATA_LOCATION <raw data path> --DELTA_LOCATION <delta table path>"
+```
+
+== AWS-Glue execution
+
+Upload ./src/main/scala/DeltaPlayGlueApp.scala to Glue Job script config.
+Add Glue Job parameters for the mentioned _ RAW_DATA_LOCATION _ and _ DELTA_LOCATION _.
