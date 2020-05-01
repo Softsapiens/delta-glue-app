@@ -3,15 +3,33 @@
 
 == Abstract
 
+This is a PoC about using linkhttps://docs.delta.io/latest/index.html[Delta IO] in an AWS Glue ETL. I'm using the Scala approach, and my goal is to experiment with Delta on S3, and see how it fits with AWS Athena and AWS Redshift Spectrum.
+
 == Build
 
-```
-mvn compile
+In order to build the project `maven`is required. Compile and get the jar binary with `mvn compile`.
 
-mvn exec:java -Dexec.mainClass="GlueApp" -Dexec.args="--JOB-NAME delta-play-job --RAW_DATA_LOCATION <raw data path> --DELTA_LOCATION <delta table path>"
+Finally you can run it using the following command:
 ```
+mvn exec:java -Dexec.mainClass="GlueApp" \
+-Dexec.args="--JOB-NAME delta-play-job --RAW_DATA_LOCATION <raw data path> --DELTA_LOCATION <delta table path>"
+```
+
+
+=== Try-It
+
+Try it locally, for example, using link:https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet[this sample data]. Download it, and set the local path location as _RAW_DATA_LOCATION_ and point _DELTA_LOCATION_ anywhere you want to get the _Delta_ storage. 
+
+```
+mvn exec:java -Dexec.mainClass="GlueApp" -Dexec.args="--JOB-NAME delta-play-job --RAW_DATA_LOCATION /sample-data/raw/user --DELTA_LOCATION /sample-data/delta/users"
+```
+Enjoy It!
 
 == AWS-Glue execution
 
 Upload ./src/main/scala/DeltaPlayGlueApp.scala to Glue Job script config.
-Add Glue Job parameters for the mentioned _ RAW_DATA_LOCATION _ and _ DELTA_LOCATION _.
+Add Glue Job parameters for the mentioned _RAW_DATA_LOCATION_ and _DELTA_LOCATION_.
+
+=== AWS Glue version
+
+This code has been tested on Glue 1.0. link:https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-libraries.html#develop-local-scala[Here] you would find about it specification.
