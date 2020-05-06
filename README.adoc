@@ -18,7 +18,7 @@ mvn exec:java -Dexec.mainClass="GlueApp" \
 
 === Try-It
 
-Try it locally, for example, using link:https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet[this sample data]. Download it, and set the local path location as _RAW_DATA_LOCATION_ and point _DELTA_LOCATION_ anywhere you want to get the _Delta_ storage. 
+Try it locally, for example, using link:https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet[sample data]. Download it, and set the local path location as _RAW_DATA_LOCATION_ and point _DELTA_LOCATION_ anywhere you want to get the _Delta_ storage.
 
 ```
 mvn exec:java -Dexec.mainClass="GlueApp" -Dexec.args="--JOB-NAME delta-play-job --RAW_DATA_LOCATION /sample-data/raw/user --DELTA_LOCATION /sample-data/delta/users"
@@ -33,3 +33,31 @@ Add Glue Job parameters for the mentioned _RAW_DATA_LOCATION_ and _DELTA_LOCATIO
 === AWS Glue version
 
 This code has been tested on Glue 1.0. link:https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-libraries.html#develop-local-scala[Here] you would find about it specification.
+
+
+=== AWS Data Catalog
+
+The following command creates a external table(for the mentioned link:https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet[sample data]) using athena visible from Glue Data Catalog:
+
+```bash
+aws athena --profile pa start-query-execution --query-string " 
+ CREATE EXTERNAL TABLE default.users_delta (
+    registration_dttm TIMESTAMP,
+    id int
+    first_name string,
+    last_name string,
+    email string,
+    gender string,
+    ip_address string,
+    cc string,
+    country string,
+    birthdate string,
+    salary double,
+    title string,
+    comments string
+  )
+  STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat' OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat'
+  LOCATION 's3://<bucket-name>/data/delta/users/_symlink_format_manifest/'
+  tblproperties ('parquet.compress'='SNAPPY');"  \
+  --result-configuration "OutputLocation=s3://<bucket-name>/athena/output/"
+```
