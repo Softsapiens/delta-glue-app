@@ -1,6 +1,8 @@
 = DeltaApp AWS-Glue Application
 :toc:
 
+image:https://github.com/Softsapiens/delta-glue-app/workflows/Java%20CI/badge.svg[]
+
 == Abstract
 
 This is a PoC about using linkhttps://docs.delta.io/latest/index.html[Delta IO] in an AWS Glue ETL. I'm using the Scala approach, and my goal is to experiment with Delta on S3, and see how it fits with AWS Athena and AWS Redshift Spectrum.
