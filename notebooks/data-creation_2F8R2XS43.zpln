@@ -1,0 +1,564 @@
+{
+  "paragraphs": [
+    {
+      "text": "%spark.conf\n\n# You can customize SPARK_HOME as well in `spark.conf`\nSPARK_HOME /spark\n#spark.jars.packages \"io.delta:delta-core_2.11-0.6.0\"\n\n\nspark.driver.memory 2g\n#spark.executor.instances  6\nspark.executor.memory  2g\n\n\n# Disable minimum vacuum hours retention (\u003e 168h)\nspark.databricks.delta.retentionDurationCheck.enabled \u003d false\n\n# Check delta config properties here:\n# https://github.com/delta-io/delta/blob/master/src/main/scala/org/apache/spark/sql/delta/DeltaConfig.scala\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-05-08 08:53:22.114",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/text"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588167116455_672439562",
+      "id": "paragraph_1588167116455_672439562",
+      "dateCreated": "2020-04-29 13:31:56.455",
+      "dateStarted": "2020-05-08 08:53:22.130",
+      "dateFinished": "2020-05-08 08:53:22.159",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nimport io.delta.tables._\nimport org.apache.spark.sql.functions._\n\nval USER_DATA_LOCATION \u003d \"/data/raw/userdata\"\nval USER_DELTA_LOCATION\u003d \"/data/delta/users\"\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-05-08 08:53:26.921",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import io.delta.tables._\nimport org.apache.spark.sql.functions._\n\u001b[1m\u001b[34mUSER_DATA_LOCATION\u001b[0m: \u001b[1m\u001b[32mString\u001b[0m \u003d /data/raw/userdata\n\u001b[1m\u001b[34mUSER_DELTA_LOCATION\u001b[0m: \u001b[1m\u001b[32mString\u001b[0m \u003d /data/delta/users\n"
+          }
+        ]
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588167784948_-1618856702",
+      "id": "paragraph_1588167784948_-1618856702",
+      "dateCreated": "2020-04-29 13:43:04.948",
+      "dateStarted": "2020-05-08 08:53:26.933",
+      "dateFinished": "2020-05-08 08:53:41.436",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nval userdf1 \u003d spark.read.format(\"parquet\").load(s\"${USER_DATA_LOCATION}/userdata1.parquet\")\n\nuserdf1.printSchema\nuserdf1.show()\nuserdf1.count()\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-05-08 08:53:53.400",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- registration_dttm: timestamp (nullable \u003d true)\n |-- id: integer (nullable \u003d true)\n |-- first_name: string (nullable \u003d true)\n |-- last_name: string (nullable \u003d true)\n |-- email: string (nullable \u003d true)\n |-- gender: string (nullable \u003d true)\n |-- ip_address: string (nullable \u003d true)\n |-- cc: string (nullable \u003d true)\n |-- country: string (nullable \u003d true)\n |-- birthdate: string (nullable \u003d true)\n |-- salary: double (nullable \u003d true)\n |-- title: string (nullable \u003d true)\n |-- comments: string (nullable \u003d true)\n\n+-------------------+---+----------+---------+--------------------+------+---------------+-------------------+--------------------+----------+---------+--------------------+--------------------+\n|  registration_dttm| id|first_name|last_name|               email|gender|     ip_address|                 cc|             country| birthdate|   salary|               title|            comments|\n+-------------------+---+----------+---------+--------------------+------+---------------+-------------------+--------------------+----------+---------+--------------------+--------------------+\n|2016-02-03 07:55:29|  1|    Amanda|   Jordan|    ajordan0@com.com|Female|    1.197.201.2|   6759521864920116|           Indonesia|  3/8/1971| 49756.53|    Internal Auditor|               1E+02|\n|2016-02-03 17:04:03|  2|    Albert|  Freeman|     afreeman1@is.gd|  Male| 218.111.175.34|                   |              Canada| 1/16/1968|150280.17|       Accountant IV|                    |\n|2016-02-03 01:09:31|  3|    Evelyn|   Morgan|emorgan2@altervis...|Female|   7.161.136.94|   6767119071901597|              Russia|  2/1/1960|144972.51| Structural Engineer|                    |\n|2016-02-03 00:36:21|  4|    Denise|    Riley|    driley3@gmpg.org|Female|  140.35.109.83|   3576031598965625|               China|  4/8/1997| 90263.05|Senior Cost Accou...|                    |\n|2016-02-03 05:05:31|  5|    Carlos|    Burns|cburns4@miitbeian...|      | 169.113.235.40|   5602256255204850|        South Africa|          |     null|                    |                    |\n|2016-02-03 07:22:34|  6|   Kathryn|    White|  kwhite5@google.com|Female| 195.131.81.179|   3583136326049310|           Indonesia| 2/25/1983| 69227.11|   Account Executive|                    |\n|2016-02-03 08:33:08|  7|    Samuel|   Holmes|sholmes6@foxnews.com|  Male| 232.234.81.197|   3582641366974690|            Portugal|12/18/1987| 14247.62|Senior Financial ...|                    |\n|2016-02-03 06:47:06|  8|     Harry|   Howell| hhowell7@eepurl.com|  Male|   91.235.51.73|                   |Bosnia and Herzeg...|  3/1/1962|186469.43|    Web Developer IV|                    |\n|2016-02-03 03:52:53|  9|      Jose|   Foster|   jfoster8@yelp.com|  Male|   132.31.53.61|                   |         South Korea| 3/27/1992|231067.84|Software Test Eng...|               1E+02|\n|2016-02-03 18:29:47| 10|     Emily|  Stewart|estewart9@opensou...|Female| 143.28.251.245|   3574254110301671|             Nigeria| 1/28/1997| 27234.28|     Health Coach IV|                    |\n|2016-02-03 00:10:42| 11|     Susan|  Perkins| sperkinsa@patch.com|Female|    180.85.0.62|   3573823609854134|              Russia|          |210001.95|                    |                    |\n|2016-02-03 18:04:34| 12|     Alice|    Berry|aberryb@wikipedia...|Female| 246.225.12.189|   4917830851454417|               China| 8/12/1968| 22944.53|    Quality Engineer|                    |\n|2016-02-03 18:48:17| 13|    Justin|    Berry|jberryc@usatoday.com|  Male|   157.7.146.43|6331109912871813274|              Zambia| 8/15/1975| 44165.46|Structural Analys...|                    |\n|2016-02-03 21:46:52| 14|     Kathy| Reynolds|kreynoldsd@redcro...|Female|  81.254.172.13|   5537178462965976|Bosnia and Herzeg...| 6/27/1970|286592.99|           Librarian|                    |\n|2016-02-03 08:53:23| 15|   Dorothy|   Hudson|dhudsone@blogger.com|Female|       8.59.7.0|   3542586858224170|               Japan|12/20/1989|157099.71|  Nurse Practicioner|\u003cscript\u003ealert(\u0027hi...|\n|2016-02-03 00:44:01| 16|     Bruce|   Willis|bwillisf@bluehost...|  Male|239.182.219.189|   3573030625927601|              Brazil|          |239100.65|                    |                    |\n|2016-02-03 00:57:45| 17|     Emily|  Andrews|eandrewsg@cornell...|Female| 29.231.180.172|     30271790537626|              Russia| 4/13/1990|116800.65|        Food Chemist|                    |\n|2016-02-03 16:44:24| 18|   Stephen|  Wallace|swallaceh@netvibe...|  Male|  152.49.213.62|   5433943468526428|             Ukraine| 1/15/1978|248877.99|Account Represent...|                    |\n|2016-02-03 11:45:54| 19|  Clarence|   Lawson|clawsoni@vkontakt...|  Male| 107.175.15.152|   3544052814080964|              Russia|          |177122.99|                    |                    |\n|2016-02-03 10:30:36| 20|   Rebecca|     Bell| rbellj@bandcamp.com|Female|172.215.104.127|                   |               China|          |137251.19|                    |                    |\n+-------------------+---+----------+---------+--------------------+------+---------------+-------------------+--------------------+----------+---------+--------------------+--------------------+\nonly showing top 20 rows\n\n\u001b[1m\u001b[34muserdf1\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m \u003d [registration_dttm: timestamp, id: int ... 11 more fields]\n\u001b[1m\u001b[34mres1\u001b[0m: \u001b[1m\u001b[32mLong\u001b[0m \u003d 1000\n"
+          }
+        ]
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588167187970_-733000699",
+      "id": "paragraph_1588167187970_-733000699",
+      "dateCreated": "2020-04-29 13:33:07.970",
+      "dateStarted": "2020-05-08 08:53:53.413",
+      "dateFinished": "2020-05-08 08:53:57.701",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nuserdf1.write.format(\"delta\").mode(\"overwrite\").save(USER_DELTA_LOCATION)\n\nval userdelta \u003d DeltaTable.forPath(spark, USER_DELTA_LOCATION)",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:15.130",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34muserdelta\u001b[0m: \u001b[1m\u001b[32mio.delta.tables.DeltaTable\u001b[0m \u003d io.delta.tables.DeltaTable@2932a122\n"
+          }
+        ]
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588168568033_-1053373612",
+      "id": "paragraph_1588168568033_-1053373612",
+      "dateCreated": "2020-04-29 13:56:08.034",
+      "dateStarted": "2020-04-30 06:32:15.134",
+      "dateFinished": "2020-04-30 06:32:23.039",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nval userdf2 \u003d spark.read.format(\"parquet\").load(s\"${USER_DATA_LOCATION}/userdata2.parquet\")\n\nuserdf2.show()\nuserdf2.count()\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:23.045",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+----+----------+---------+--------------------+------+---------------+----------------+--------------------+----------+---------+--------------------+--------+\n|  registration_dttm|  id|first_name|last_name|               email|gender|     ip_address|              cc|             country| birthdate|   salary|               title|comments|\n+-------------------+----+----------+---------+--------------------+------+---------------+----------------+--------------------+----------+---------+--------------------+--------+\n|2016-02-03 13:36:39|   1|    Donald|    Lewis|dlewis0@clickbank...|  Male|  102.22.124.20|                |           Indonesia|  7/9/1972|140249.37|Senior Financial ...|        |\n|2016-02-03 00:22:28|   2|    Walter|  Collins|wcollins1@bloglov...|  Male|   247.28.26.93|3587726269478025|               China|          |     null|                    |        |\n|2016-02-03 18:29:04|   3|  Michelle|Henderson|mhenderson2@geoci...|Female| 193.68.146.150|                |              France| 1/15/1964|236219.26|             Teacher|        |\n|2016-02-03 13:42:19|   4|      Lori|   Hudson| lhudson3@dion.ne.jp|      |  34.252.168.48|3568840151595649|              Russia| 4/22/1988|     null|Nuclear Power Eng...|        |\n|2016-02-03 00:15:29|   5|    Howard|   Miller|   hmiller4@fema.gov|  Male|103.193.150.230|3583473261055014|              France|11/26/1998| 50210.02|       Senior Editor|        |\n|2016-02-03 10:49:07|   6|   Frances|    Adams|fadams5@123-reg.c...|Female| 106.196.106.93|                |              Russia| 3/27/1997| 82175.77| Account Coordinator|        |\n|2016-02-03 19:44:12|null|    Steven|   Hanson|  shanson6@cisco.com|  Male|234.130.172.185|3550842607768119|           Indonesia|          |129582.61|                    |        |\n|2016-02-03 08:11:34|   8|     Louis|  Simmons|   lsimmons7@icio.us|  Male|    18.69.80.15|                |               China|  6/1/1992| 90744.86|    Product Engineer|        |\n|2016-02-03 23:56:51|   9|     Keith|   Parker|kparker8@amazonaw...|  Male|  108.205.40.64|                |          Guadeloupe|12/30/1992|  60618.9|        Developer II|        |\n|2016-02-03 07:47:29|  10|     Wanda|   Walker|wwalker9@latimes.com|Female|  246.214.98.78|3539421569669478|            Portugal|          |137664.53|                    |        |\n|2016-02-03 16:39:23|  11|   Kathryn|   Weaver|kweavera@bizjourn...|Female| 157.237.161.75| 201425019338900|              Sweden|          |117572.65|                    |        |\n|2016-02-03 06:50:56|  12|    Philip|     Ward| pwardb@sakura.ne.jp|  Male|  77.140.225.69| 201508031789224|              Greece|  9/3/1984|238925.79|Human Resources M...|        |\n|2016-02-03 23:36:58|  13|    Evelyn|   Harvey|   eharveyc@time.com|      |  254.174.154.7|3539535868968594|               China| 5/15/1979|     null|Software Engineer...|        |\n|2016-02-03 07:33:24|  14|    Andrea|     Lane|       alaned@gov.uk|Female|192.253.116.192|5100174455306952|           Indonesia| 1/19/1989|166778.42|            Operator|        |\n|2016-02-03 13:45:04|  15|     Bobby|  Vasquez|  bvasqueze@furl.net|  Male|  126.60.18.195|3581051861650673|         Philippines| 1/25/1975|138184.83|       Senior Editor|        |\n|2016-02-03 21:58:10|  16|   Kenneth|   Gibson|kgibsonf@soundclo...|  Male| 91.153.142.170|5389947292571488|                Peru| 11/3/1975| 98614.53|  Environmental Tech|        |\n|2016-02-03 16:22:34|  17|     Emily|     Hill|    ehillg@house.gov|Female|109.107.174.205|                |Palestinian Terri...| 5/18/1956|218781.48| Executive Secretary|        |\n|2016-02-03 23:20:49|  18|     Kelly|   Fowler|   kfowlerh@dell.com|Female|  147.58.88.116|3551741291105936|              Greece| 6/11/1975|117249.56|Systems Administr...|        |\n|2016-02-03 18:28:46|  19|     Diana|   Howell| dhowelli@sphinn.com|Female|   21.240.75.42|4026635872860296|                Iran|  7/7/1993|174844.52|             Teacher|        |\n|2016-02-03 02:23:26|  20|    Johnny|  Collins| jcollinsj@google.ca|  Male| 38.173.129.250| 372301677387203|         Afghanistan| 7/28/1987|155908.69|       Social Worker|        |\n+-------------------+----+----------+---------+--------------------+------+---------------+----------------+--------------------+----------+---------+--------------------+--------+\nonly showing top 20 rows\n\n\u001b[1m\u001b[34muserdf2\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m \u003d [registration_dttm: timestamp, id: int ... 11 more fields]\n\u001b[1m\u001b[34mres2\u001b[0m: \u001b[1m\u001b[32mLong\u001b[0m \u003d 1000\n"
+          }
+        ]
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588167236215_-1691941025",
+      "id": "paragraph_1588167236215_-1691941025",
+      "dateCreated": "2020-04-29 13:33:56.215",
+      "dateStarted": "2020-04-30 06:32:23.051",
+      "dateFinished": "2020-04-30 06:32:23.749",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nuserdf2.write.format(\"delta\").mode(\"append\").save(USER_DELTA_LOCATION)\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:23.762",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588168913924_-1953550795",
+      "id": "paragraph_1588168913924_-1953550795",
+      "dateCreated": "2020-04-29 14:01:53.924",
+      "dateStarted": "2020-04-30 06:32:23.769",
+      "dateFinished": "2020-04-30 06:32:26.593",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nval userdf3 \u003d spark.read.format(\"parquet\").load(s\"${USER_DATA_LOCATION}/userdata3.parquet\")\n\nuserdf3.show()\nuserdf3.count()\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:26.673",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+---+----------+----------+--------------------+------+---------------+-------------------+-----------+----------+---------+--------------------+--------------------+\n|  registration_dttm| id|first_name| last_name|               email|gender|     ip_address|                 cc|    country| birthdate|   salary|               title|            comments|\n+-------------------+---+----------+----------+--------------------+------+---------------+-------------------+-----------+----------+---------+--------------------+--------------------+\n|2016-02-03 16:07:46|  1|    Ernest|    Fuller|efuller0@examiner...|  Male|   106.72.28.74|   5610608195667267|     Israel|          |140639.36|                    |                    |\n|2016-02-03 21:52:07|  2|   Anthony|    Foster|  afoster1@weibo.com|  Male|156.243.130.166|   4508242795214771|  Indonesia| 1/16/1998|172843.61|        Developer II|👾 🙇 💁 🙅 🙆 🙋...|\n|2016-02-03 02:22:19|  3|      Ryan|Montgomery|rmontgomery2@mozi...|  Male|  28.55.168.128|                   |   Colombia|11/21/1978|204620.66|         Developer I|                   ␢|\n|2016-02-03 04:20:04|  4|    Brenda|    Nelson|bnelson3@photobuc...|Female|  185.81.160.85|                   |  Guatemala|10/29/1998|260474.12|GIS Technical Arc...|                    |\n|2016-02-03 00:15:16|  5|Jacqueline|     Ellis|  jellis4@amazon.com|Female|  158.137.238.6|                   |     Russia| 7/12/1959|286038.78| Marketing Assistant|                    |\n|2016-02-03 19:48:14|  6|      Paul|  Ferguson| pferguson5@gmpg.org|  Male|141.122.136.144|     30501574577558|   Thailand|          |241518.24|                    |                    |\n|2016-02-03 08:59:05|  7|     Linda|      Hunt|    lhunt6@prlog.org|Female|  104.179.97.82|                   |     Russia| 3/30/1988|192756.38|           Professor|                    |\n|2016-02-03 08:04:51|  8|   Frances|       Kim|      fkim7@blog.com|Female|   28.77.158.48| 676306013856639159|  Indonesia|          |188511.28|                    |\u003csvg\u003e\u003cscript\u003e0\u003c1\u003e...|\n|2016-02-03 08:12:33|  9|     Jason|  Matthews|jmatthews8@google...|  Male|  72.129.239.24|   3534550235909507|      China| 7/29/1982|238068.56|    Web Designer III|                    |\n|2016-02-03 17:08:02| 10|   Carolyn|   Elliott|celliott9@cpanel.net|Female|   51.211.70.30|   3563436733386899|  Indonesia| 4/28/1977|132718.26|      Research Nurse|                    |\n|2016-02-03 04:22:59| 11|    Thomas|     Mills|     tmillsa@psu.edu|  Male|104.114.227.199|5018278895598921190|     Russia|          |236386.69|                    |                    |\n|2016-02-03 21:19:27| 12|   Russell|       Lee|rleeb@howstuffwor...|  Male|193.165.137.217|                   |      China|          |280252.36|                    |         🐵 🙈 🙉 🙊|\n|2016-02-03 18:47:44| 13|     Chris|    Bailey|cbaileyc@redcross...|  Male|246.109.118.154|     30485245023962|   Thailand|11/26/1970|200218.34|Research Assistant I|                    |\n|2016-02-03 00:01:52| 14|      Eric|    Parker|    eparkerd@usa.gov|  Male|   25.73.91.135|   5602249431899032|     Russia| 8/12/1986|102832.54|      Tax Accountant|                    |\n|2016-02-03 19:13:08| 15|      Anne| Robertson|arobertsone@geoci...|Female|   209.77.27.30|                   |    Armenia|          |168201.04|                    |                  　|\n|2016-02-03 10:11:18| 16|    Angela|  Gonzalez|agonzalezf@state.gov|Female|  118.77.43.191|                   |     Sweden|  7/1/1972|161220.37|Database Administ...|                    |\n|2016-02-03 08:35:22| 17|    Edward|    Moreno|     emorenog@hp.com|  Male|  200.50.125.67|   3559979696602303|     France| 8/17/1966|144551.41|Chief Design Engi...|                    |\n|2016-02-03 10:42:25| 18|       Roy|    Murray| rmurrayh@sphinn.com|  Male|  91.52.226.221|   3546330084792460|   Portugal|          |285872.87|                    |      𠜎𠜱𠝹𠱓𠱸𠲖𠳏|\n|2016-02-03 09:48:59| 19|     Louis|    Willis|     lwillisi@hp.com|      |  14.132.82.250|                   |Philippines|  8/1/1980|     null|   Director of Sales|                    |\n|2016-02-03 20:09:32| 20|    Edward|     Perez|eperezj@china.com.cn|  Male|  24.152.201.59|   3571014044514515|  Indonesia|          | 29515.23|                    |                    |\n+-------------------+---+----------+----------+--------------------+------+---------------+-------------------+-----------+----------+---------+--------------------+--------------------+\nonly showing top 20 rows\n\n\u001b[1m\u001b[34muserdf3\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m \u003d [registration_dttm: timestamp, id: int ... 11 more fields]\n\u001b[1m\u001b[34mres4\u001b[0m: \u001b[1m\u001b[32mLong\u001b[0m \u003d 1000\n"
+          }
+        ]
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588169105339_1642865105",
+      "id": "paragraph_1588169105339_1642865105",
+      "dateCreated": "2020-04-29 14:05:05.339",
+      "dateStarted": "2020-04-30 06:32:26.677",
+      "dateFinished": "2020-04-30 06:32:27.481",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nuserdf3.write.format(\"delta\").mode(\"append\").save(USER_DELTA_LOCATION)",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:27.581",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588169167872_592713215",
+      "id": "paragraph_1588169167872_592713215",
+      "dateCreated": "2020-04-29 14:06:07.872",
+      "dateStarted": "2020-04-30 06:32:27.591",
+      "dateFinished": "2020-04-30 06:32:30.470",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\n\nval userdf4 \u003d spark.read.format(\"parquet\").load(s\"${USER_DATA_LOCATION}/userdata4.parquet\")\n\nuserdf4.show()\nuserdf4.count()",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:30.504",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+---+----------+----------+--------------------+------+---------------+-------------------+-------------+----------+---------+--------------------+--------+\n|  registration_dttm| id|first_name| last_name|               email|gender|     ip_address|                 cc|      country| birthdate|   salary|               title|comments|\n+-------------------+---+----------+----------+--------------------+------+---------------+-------------------+-------------+----------+---------+--------------------+--------+\n|2016-02-04 15:28:05|  1|    Howard|    Morgan|hmorgan0@typepad.com|      | 158.178.195.62|                   |     Colombia| 12/2/1992|     null|     Data Coordiator|        |\n|2016-02-04 10:28:40|  2|   Jessica|   Schmidt|jschmidt1@google.com|Female| 168.118.247.35|   3565285464047941|   Luxembourg| 4/14/1995|222396.46|      Research Nurse|     nil|\n|2016-02-04 18:01:36|  3|   Beverly|    Flores|bflores2@wikipedi...|Female|   51.97.88.173|                   |       Sweden| 2/15/1965| 141112.8|             Actuary|        |\n|2016-02-04 08:51:14|  4|   Marilyn|   Sanchez| msanchez3@intel.com|Female|186.206.142.162|                   |        China|  8/6/1969| 87914.29| Structural Engineer|        |\n|2016-02-04 06:33:08|  5|    Janice|  Mitchell|jmitchell4@sina.c...|Female|205.187.116.241|5610719759939376962|       Poland|  7/4/1995| 269297.4|Systems Administr...|        |\n|2016-02-04 00:20:27|  6|   William|Williamson|wwilliamson5@trel...|  Male|   44.86.73.201|    201849487683564|    Indonesia| 12/6/1993| 95352.25|           Librarian|   1E+02|\n|2016-02-04 16:10:12|  7|      Jack|     James|   jjames6@sogou.com|  Male|  59.184.76.208|   3552911855395632|    Indonesia|11/25/1968| 82549.73|Compensation Analyst| ‪‪test‪|\n|2016-02-04 03:25:25|  8|     Jesse|    Arnold|    jarnold7@soup.io|  Male|     7.25.90.13|   5100177285965756|       Brazil|10/19/1987|257968.86| Executive Secretary|        |\n|2016-02-04 21:50:27|  9|      Lori|     Woods|lwoods8@fastcompa...|Female|  147.157.215.9|   4844532485570190|    Indonesia|12/26/1975|186145.91|      Health Coach I|        |\n|2016-02-04 15:57:35| 10|      Juan|     Evans|  jevans9@zimbio.com|  Male|150.132.218.181|   3578802610769023|  Philippines| 5/29/1988|129369.52|       Social Worker|        |\n|2016-02-04 09:51:30| 11|       Roy|  Matthews| rmatthewsa@ucsd.edu|  Male| 203.239.85.224|   5100135134598509|       Russia|          |192057.84|                    |        |\n|2016-02-04 11:42:25| 12|   Kenneth|      King|   kkingb@zimbio.com|      |   9.103.96.206| 675913564329481832|       Greece|          |     null|                    |        |\n|2016-02-04 06:50:00| 13|   Raymond|     Green|     rgreenc@fc2.com|  Male|   163.9.101.43|                   |United States| 1/28/1984|225094.01|Budget/Accounting...|        |\n|2016-02-04 16:28:20| 14|   Lillian|  Stephens|  lstephensd@psu.edu|Female|   31.50.183.23| 630455284969060148|      Finland|  6/1/1973| 19354.85|Information Syste...|        |\n|2016-02-04 04:38:17| 15|      Mary|  Gonzales|mgonzalese@wired.com|Female|   91.42.17.109|   3560985473023370|       France|  5/7/1966| 23746.36|Compensation Analyst|        |\n|2016-02-04 04:58:15| 16|     Roger|     Mason|rmasonf@newyorker...|  Male| 169.33.172.204|   3545036194973129|       Norway|          |165855.47|                    |        |\n|2016-02-04 16:43:18| 17|     Diane|      Cole|   dcoleg@unesco.org|Female|  157.11.85.209|                   |  Philippines|  6/9/1994|105028.67|   Assistant Manager|        |\n|2016-02-04 15:54:30| 18|     Annie|      Hunt|    ahunth@ocn.ne.jp|Female| 169.47.232.187|   5100177440436305|       Poland| 3/30/1992| 266071.6|     Legal Assistant|        |\n|2016-02-04 15:47:52| 19|Jacqueline|   Bradley|   jbradleyi@epa.gov|Female|  83.241.214.77|   5100131814165289|    Indonesia| 12/1/1971| 55440.88|    Dental Hygienist|        |\n|2016-02-04 15:37:28| 20|     Kathy|   Russell|krussellj@joomla.org|Female|   158.32.89.44|   3585627581021729|    Indonesia|11/20/1999| 29602.23|Sales Representative|        |\n+-------------------+---+----------+----------+--------------------+------+---------------+-------------------+-------------+----------+---------+--------------------+--------+\nonly showing top 20 rows\n\n\u001b[1m\u001b[34muserdf4\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m \u003d [registration_dttm: timestamp, id: int ... 11 more fields]\n\u001b[1m\u001b[34mres6\u001b[0m: \u001b[1m\u001b[32mLong\u001b[0m \u003d 1000\n"
+          }
+        ]
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588169206454_-1267909142",
+      "id": "paragraph_1588169206454_-1267909142",
+      "dateCreated": "2020-04-29 14:06:46.454",
+      "dateStarted": "2020-04-30 06:32:30.509",
+      "dateFinished": "2020-04-30 06:32:31.219",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nuserdf4.write.format(\"delta\").mode(\"append\").save(USER_DELTA_LOCATION)",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:31.309",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588169229494_337189415",
+      "id": "paragraph_1588169229494_337189415",
+      "dateCreated": "2020-04-29 14:07:09.494",
+      "dateStarted": "2020-04-30 06:32:31.313",
+      "dateFinished": "2020-04-30 06:32:33.185",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nval userdelta \u003d DeltaTable.forPath(spark, USER_DELTA_LOCATION)\n\nuserdelta.history.show\n\nuserdelta.toDF.count",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:33.214",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------+-------------------+------+--------+---------+--------------------+----+--------+---------+-----------+--------------+-------------+--------------------+\n|version|          timestamp|userId|userName|operation| operationParameters| job|notebook|clusterId|readVersion|isolationLevel|isBlindAppend|    operationMetrics|\n+-------+-------------------+------+--------+---------+--------------------+----+--------+---------+-----------+--------------+-------------+--------------------+\n|     31|2020-04-30 06:32:31|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         30|          null|         true|[numFiles -\u003e 1, n...|\n|     30|2020-04-30 06:32:28|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         29|          null|         true|[numFiles -\u003e 1, n...|\n|     29|2020-04-30 06:32:24|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         28|          null|         true|[numFiles -\u003e 1, n...|\n|     28|2020-04-30 06:32:21|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         27|          null|        false|[numFiles -\u003e 1, n...|\n|     27|2020-04-30 06:29:33|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         26|          null|         true|[numFiles -\u003e 1, n...|\n|     26|2020-04-30 06:29:31|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         25|          null|         true|[numFiles -\u003e 1, n...|\n|     25|2020-04-30 06:29:28|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         24|          null|         true|[numFiles -\u003e 1, n...|\n|     24|2020-04-30 06:29:25|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         23|          null|        false|[numFiles -\u003e 1, n...|\n|     23|2020-04-29 15:18:55|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         22|          null|         true|[numFiles -\u003e 1, n...|\n|     22|2020-04-29 15:18:02|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         21|          null|         true|[numFiles -\u003e 1, n...|\n|     21|2020-04-29 15:17:55|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         20|          null|         true|[numFiles -\u003e 1, n...|\n|     20|2020-04-29 15:17:34|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         19|          null|        false|[numFiles -\u003e 1, n...|\n|     19|2020-04-29 15:14:58|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         18|          null|         true|[numFiles -\u003e 1, n...|\n|     18|2020-04-29 15:14:54|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         17|          null|         true|[numFiles -\u003e 1, n...|\n|     17|2020-04-29 15:14:51|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         16|          null|         true|[numFiles -\u003e 1, n...|\n|     16|2020-04-29 15:14:48|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         15|          null|        false|[numFiles -\u003e 1, n...|\n|     15|2020-04-29 15:10:17|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         14|          null|         true|[numFiles -\u003e 1, n...|\n|     14|2020-04-29 15:10:07|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         13|          null|         true|[numFiles -\u003e 1, n...|\n|     13|2020-04-29 15:10:01|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         12|          null|         true|[numFiles -\u003e 1, n...|\n|     12|2020-04-29 15:09:39|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         11|          null|        false|[numFiles -\u003e 1, n...|\n+-------+-------------------+------+--------+---------+--------------------+----+--------+---------+-----------+--------------+-------------+--------------------+\nonly showing top 20 rows\n\n\u001b[1m\u001b[34muserdelta\u001b[0m: \u001b[1m\u001b[32mio.delta.tables.DeltaTable\u001b[0m \u003d io.delta.tables.DeltaTable@70f3415b\n\u001b[1m\u001b[34mres8\u001b[0m: \u001b[1m\u001b[32mLong\u001b[0m \u003d 4000\n"
+          }
+        ]
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588169243260_1320956670",
+      "id": "paragraph_1588169243260_1320956670",
+      "dateCreated": "2020-04-29 14:07:23.260",
+      "dateStarted": "2020-04-30 06:32:33.218",
+      "dateFinished": "2020-04-30 06:32:34.541",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\n// Remove all data files not involved with current life version.\n//userdelta.vacuum(0) ",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:34.619",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588169943604_1525491700",
+      "id": "paragraph_1588169943604_1525491700",
+      "dateCreated": "2020-04-29 14:19:03.604",
+      "dateStarted": "2020-04-30 06:32:34.624",
+      "dateFinished": "2020-04-30 06:32:34.812",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\n\nuserdelta.history.show\n\nuserdelta.toDF.count",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:34.824",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------+-------------------+------+--------+---------+--------------------+----+--------+---------+-----------+--------------+-------------+--------------------+\n|version|          timestamp|userId|userName|operation| operationParameters| job|notebook|clusterId|readVersion|isolationLevel|isBlindAppend|    operationMetrics|\n+-------+-------------------+------+--------+---------+--------------------+----+--------+---------+-----------+--------------+-------------+--------------------+\n|     31|2020-04-30 06:32:31|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         30|          null|         true|[numFiles -\u003e 1, n...|\n|     30|2020-04-30 06:32:28|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         29|          null|         true|[numFiles -\u003e 1, n...|\n|     29|2020-04-30 06:32:24|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         28|          null|         true|[numFiles -\u003e 1, n...|\n|     28|2020-04-30 06:32:21|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         27|          null|        false|[numFiles -\u003e 1, n...|\n|     27|2020-04-30 06:29:33|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         26|          null|         true|[numFiles -\u003e 1, n...|\n|     26|2020-04-30 06:29:31|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         25|          null|         true|[numFiles -\u003e 1, n...|\n|     25|2020-04-30 06:29:28|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         24|          null|         true|[numFiles -\u003e 1, n...|\n|     24|2020-04-30 06:29:25|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         23|          null|        false|[numFiles -\u003e 1, n...|\n|     23|2020-04-29 15:18:55|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         22|          null|         true|[numFiles -\u003e 1, n...|\n|     22|2020-04-29 15:18:02|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         21|          null|         true|[numFiles -\u003e 1, n...|\n|     21|2020-04-29 15:17:55|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         20|          null|         true|[numFiles -\u003e 1, n...|\n|     20|2020-04-29 15:17:34|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         19|          null|        false|[numFiles -\u003e 1, n...|\n|     19|2020-04-29 15:14:58|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         18|          null|         true|[numFiles -\u003e 1, n...|\n|     18|2020-04-29 15:14:54|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         17|          null|         true|[numFiles -\u003e 1, n...|\n|     17|2020-04-29 15:14:51|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         16|          null|         true|[numFiles -\u003e 1, n...|\n|     16|2020-04-29 15:14:48|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         15|          null|        false|[numFiles -\u003e 1, n...|\n|     15|2020-04-29 15:10:17|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         14|          null|         true|[numFiles -\u003e 1, n...|\n|     14|2020-04-29 15:10:07|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         13|          null|         true|[numFiles -\u003e 1, n...|\n|     13|2020-04-29 15:10:01|  null|    null|    WRITE|[mode -\u003e Append, ...|null|    null|     null|         12|          null|         true|[numFiles -\u003e 1, n...|\n|     12|2020-04-29 15:09:39|  null|    null|    WRITE|[mode -\u003e Overwrit...|null|    null|     null|         11|          null|        false|[numFiles -\u003e 1, n...|\n+-------+-------------------+------+--------+---------+--------------------+----+--------+---------+-----------+--------------+-------------+--------------------+\nonly showing top 20 rows\n\n\u001b[1m\u001b[34mres11\u001b[0m: \u001b[1m\u001b[32mLong\u001b[0m \u003d 4000\n"
+          }
+        ]
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588169298095_46788610",
+      "id": "paragraph_1588169298095_46788610",
+      "dateCreated": "2020-04-29 14:08:18.095",
+      "dateStarted": "2020-04-30 06:32:34.827",
+      "dateFinished": "2020-04-30 06:32:36.022",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n\nval userv3 \u003d spark.read.format(\"delta\").load(USER_DELTA_LOCATION + \"@v5\") // Time travel to past versions\n\nuserv3.count",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:36.028",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34muserv3\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m \u003d [registration_dttm: timestamp, id: int ... 11 more fields]\n\u001b[1m\u001b[34mres12\u001b[0m: \u001b[1m\u001b[32mLong\u001b[0m \u003d 2000\n"
+          }
+        ]
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588170516962_2124138992",
+      "id": "paragraph_1588170516962_2124138992",
+      "dateCreated": "2020-04-29 14:28:36.963",
+      "dateStarted": "2020-04-30 06:32:36.035",
+      "dateFinished": "2020-04-30 06:32:39.288",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-04-30 06:32:39.337",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1588170602732_1133362345",
+      "id": "paragraph_1588170602732_1133362345",
+      "dateCreated": "2020-04-29 14:30:02.732",
+      "status": "FINISHED"
+    }
+  ],
+  "name": "data-creation",
+  "id": "2F8R2XS43",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0-preview1",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
