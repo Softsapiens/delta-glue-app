@@ -33,8 +33,8 @@ export REPO_PATH=<repo clone location>
 export ZEPPELIN_DATA=~/Downloads/zeppelin-data
 export SPARK_HOME=~/Downloads/aws-spark-2.4.3-bin-spark-2.4.3-bin-hadoop2.8
 
-docker run --net host --rm -v $REPO_PATH/notebooks:/notebook -v
-$SPARK_HOME:/spark -v $ZEPPELIN_DATA:/data \
+docker run --net host --rm -v $REPO_PATH/notebooks:/notebook \
+-v $SPARK_HOME:/spark -v $ZEPPELIN_DATA:/data \
 -e ZEPPELIN_NOTEBOOK_DIR='/notebook' \
 --user 1000 --name zeppelin apache/zeppelin:0.9.0
 ```
